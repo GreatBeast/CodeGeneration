@@ -11,7 +11,7 @@ import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 
 public class fqSequence {
 
-	public static final int MINSUP = 3; // 最小支持度
+	public static final int MINSUP = 5; // 最小支持度
 	
 	/*
 	 * 核心算法函数，用于生成频繁项

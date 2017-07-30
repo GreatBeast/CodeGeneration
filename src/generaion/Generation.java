@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.*;
 public class Generation {
 
 	
-	public static final int MINSUP = 3; // 最小支持度
+	public static final int MINSUP = 5; // 最小支持度
 	public AST ast = AST.newAST(AST.JLS8); // 用来新建所有节点的ast
 	public AstMapTree fqTree;
 	public String apiStr; // 输入的api字符串
@@ -94,6 +94,10 @@ public class Generation {
 	public void apriori_gen(List<AstMapTree> fq_k){
 		for (int amtc = 0; amtc < fq_k.size(); amtc++)
 		{
+			System.out.print(amtc);
+			System.out.print(" ");
+			System.out.println(fq_k.size());
+			
 			AstMapTree amt = fq_k.get(amtc);
 			while (amt.count < amt.stack.size())
 			{
@@ -205,7 +209,10 @@ public class Generation {
 								inputcopy.addAll(input1);
 								inputcopy.retainAll(input2);
 								if (inputcopy.size() <= MINSUP)
+								{
+									amTree.count = amTree.count + 1;
 									continue;
+								}
 								newInput = intToNewInput(inputcopy, amTree.input);
 							}
 							String existedStr = parentStr.substring(0, parentStr.length() - 2);
@@ -894,8 +901,8 @@ public class Generation {
 	 */
 	public static void main(String[] args)
 	{
-		String srcPath = "E://test//code4"; // java文件所在的文件夹
-		String api = "digest"; //api字符串
+		String srcPath = "E://test//input//open file dialog//code"; // java文件所在的文件夹
+		String api = "showOpenDialog"; //api字符串
 		List<ASTNode> nodeList = AstProd.getAstTrees(srcPath);
 		Generation g = new Generation();
 		g.init(nodeList, api);
