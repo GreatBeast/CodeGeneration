@@ -27,6 +27,9 @@ public class fqSequence {
 		List<List<Integer>> newNodeList = new ArrayList<List<Integer>>();
 		List<List<Integer>> result = new ArrayList<List<Integer>>();
 		List<List<Integer>> finalResult = new ArrayList<List<Integer>>();
+		
+		List<List<Integer>> fqTemp = new ArrayList<List<Integer>>();
+		
 		int count = 0;
 		int loop = 1;
 		
@@ -47,10 +50,22 @@ public class fqSequence {
 			}
 		} //生成频繁1项集
 		result.addAll(fq_nnode);
-		//finalResult.addAll(result);
+		for (List<Integer> r : result)
+		{
+			List<Integer> temp = new ArrayList<Integer>();
+			for (int i = 0; i < nodeList.size(); i++)
+			{
+				List<Integer> list = nodeList.get(i);
+				if (list.containsAll(r))
+					temp.add(i);
+			}
+			finalResult.add(r);
+			fqTemp.add(temp);
+		}
+//		finalResult.addAll(result);
 		
 		do {
-			finalResult.addAll(result);
+//			finalResult.addAll(result);
 			fq_nnode.removeAll(fq_nnode);
 			fq_nnode.addAll(result);
 			result.removeAll(result);
@@ -58,36 +73,7 @@ public class fqSequence {
 			count = fq_nnode.size();
 			for (int i = 0; i < count; i++)
 			{
-				List<Integer> c1 = fq_nnode.get(i);
-//				for (int j = 0; j < fq_1.size(); j++)
-//				{
-//					Integer c2 = fq_1.get(j);
-//					for (int k = 0; k <= c1.size(); k++)
-//					{
-//						if (k < c1.size() && c2 == c1.get(k))
-//							continue;
-//						List<Integer> newlist = new ArrayList<Integer>();
-//						newlist.addAll(c1);
-//						newlist.add(k, c2);
-//						boolean flag = false;
-//						for (List<Integer> oldList : newNodeList)
-//						{
-//							for (int l = 0; l < oldList.size(); l++)
-//							{
-//								if (newlist.get(l) != oldList.get(l))
-//									break;
-//								else if (l == oldList.size() - 1 && newlist.get(l) == oldList.get(l))
-//									flag = true;
-//							}
-//							if (flag == true)
-//								break;
-//						}
-//						if (flag == false)
-//							newNodeList.add(newlist);
-//					}
-//				}
-				
-				
+				List<Integer> c1 = fq_nnode.get(i);		
 				for (int j = i ; j < count; j++)
 				{
 					List<Integer> c2 = fq_nnode.get(j);
@@ -114,7 +100,7 @@ public class fqSequence {
 					newNodeList.add(newlist);
 				}
 			}
-			result = frequentSearch(nodeList, newNodeList);
+			result = frequentSearch(nodeList, newNodeList, fqTemp, finalResult);
 			loop++;
 		} while(result.size() > 0);
 		
@@ -128,31 +114,20 @@ public class fqSequence {
 	 * 
 	 * @返回值：频繁项集
 	 */
-	public static List<List<Integer>> frequentSearch(List<List<Integer>> input, List<List<Integer>> newNodeList) {
+	public static List<List<Integer>> frequentSearch(List<List<Integer>> input, List<List<Integer>> newNodeList, List<List<Integer>> fqTemp, List<List<Integer>> finalResult) {
 		List<Integer> fqCount = new ArrayList<Integer>();
 		List<List<Integer>> result = new ArrayList<List<Integer>>();
-		for (int i = 0; i < newNodeList.size(); i++)
-		{
-			fqCount.add(0);
-		}
+//		for (int i = 0; i < newNodeList.size(); i++)
+//		{
+//			fqCount.add(0);
+//		}
 		for (int i = 0; i < newNodeList.size(); i++)
 		{
 			List<Integer> nodeList = newNodeList.get(i);
-			for (List<Integer> parentList : input)
+			List<Integer> temp = new ArrayList<Integer>();
+			for (int j = 0; j < input.size(); j++)
 			{
-//				boolean flag = true;
-//				int start = -1;
-//				for (Integer nodenum : nodeList)
-//				{
-//					int posi = parentList.indexOf(nodenum);
-//					if (posi > start)
-//						start = posi;
-//					else
-//					{
-//						flag = false;
-//						break;
-//					}
-//				}
+				List<Integer> parentList = input.get(j);
 				int cnt1 = 0, cnt2 = 0;
 				while(cnt1 < parentList.size() && cnt2 < nodeList.size())
 				{
@@ -167,14 +142,55 @@ public class fqSequence {
 					}
 				}
 				if (cnt2 == nodeList.size())
-					fqCount.set(i, fqCount.get(i)+1);
+				{
+//					fqCount.set(i, fqCount.get(i)+1);
+					temp.add(j);
+				}
+			}
+			
+			if (temp.size() > MINSUP)
+			{
+//				while(fqTemp.indexOf(temp) != -1)
+//				{
+//					int index = fqTemp.indexOf(temp);
+//					finalResult.remove(index);
+//					fqTemp.remove(index);
+//				}
+				
+				List<Integer> copy1 = new ArrayList<Integer>();
+				List<Integer> copy2 = new ArrayList<Integer>();
+				copy1.addAll(nodeList.subList(0, nodeList.size() - 1));
+				copy2.addAll(nodeList.subList(1, nodeList.size()));
+				int index1 = finalResult.indexOf(copy1);
+				if (index1 != -1)
+				{
+					List<Integer> fqt = fqTemp.get(index1);
+					if (fqt.containsAll(temp) && temp.containsAll(fqt))
+					{
+						finalResult.remove(index1);
+						fqTemp.remove(index1);
+					}
+				}
+				int index2 = finalResult.indexOf(copy2);
+				if (index2 != -1)
+				{
+					List<Integer> fqt = fqTemp.get(index2);
+					if (fqt.containsAll(temp) && temp.containsAll(fqt))
+					{
+						finalResult.remove(index2);
+						fqTemp.remove(index2);
+					}
+				}
+				fqTemp.add(temp);
+				finalResult.add(nodeList);
+				result.add(nodeList);
 			}
 		}
-		for (int i = 0; i < newNodeList.size(); i++)
-		{
-			if (fqCount.get(i) > MINSUP)
-				result.add(newNodeList.get(i));
-		}
+//		for (int i = 0; i < newNodeList.size(); i++)
+//		{
+//			if (fqCount.get(i) > MINSUP)
+//				result.add(newNodeList.get(i));
+//		}
 		return result;
 	}
 	
