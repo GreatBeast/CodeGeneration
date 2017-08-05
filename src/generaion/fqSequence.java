@@ -104,6 +104,20 @@ public class fqSequence {
 			loop++;
 		} while(result.size() > 0);
 		
+		int nullCount = 0;
+		for (List<Integer> list : nodeList)
+		{
+			if (list.size() == 0)
+			{
+				nullCount++;
+				if (nullCount > MINSUP)
+				{
+					finalResult.add(new ArrayList<Integer>());
+					break;
+				}
+			}
+		}
+		
 		return finalResult;
 	}
 	

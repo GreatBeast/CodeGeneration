@@ -166,8 +166,17 @@ public class Generation {
 					
 //					if (newNodeSeqList.size() == 0 && newNodeSeqList1.size() == 0)
 //						amt.count++;
-					newNodeSeqList.add(new ArrayList<ASTNode>());
-					newNodeSeqList1.add(new ArrayList<ASTNode>());
+					//newNodeSeqList.add(new ArrayList<ASTNode>());
+					//newNodeSeqList1.add(new ArrayList<ASTNode>());
+					if (newNodeSeqList.size() == 0 && newNodeSeqList1.size() == 0)
+					{
+						newNodeSeqList.add(new ArrayList<ASTNode>());
+						newNodeSeqList1.add(new ArrayList<ASTNode>());
+					}
+					else if (newNodeSeqList.size() == 0)
+						newNodeSeqList.add(new ArrayList<ASTNode>());
+					else if (newNodeSeqList1.size() == 0)
+						newNodeSeqList1.add(new ArrayList<ASTNode>());
 					for (int c = 0; c < newNodeSeqList.size(); c++)
 					{
 						List<ASTNode> newNodeSeq = newNodeSeqList.get(c);
@@ -568,9 +577,7 @@ public class Generation {
 	public void frequent_List1(String str, List<AstMapTree> input, List<List<Integer>> fqInput, List<List<Integer>> fqInput1, List<List<ASTNode>> resultNode, List<List<ASTNode>> resultNode1){
 		List<List<Integer>> nodeSeq = new ArrayList<List<Integer>>();
 		List<List<Integer>> nodeSeq1 = new ArrayList<List<Integer>>();
-		
-		
-		
+			
 		String parentStr = str.substring(0, str.length() - 2);
 		String sonStr = str.substring(str.length() - 2, str.length());
 		String existedStr = parentStr.substring(0, parentStr.length() - 2);
@@ -890,9 +897,9 @@ public class Generation {
 		apriori_gen(amt);
 		
 		List<String> allApi = new ArrayList<String>();
-		allApi.add("getProperty");
-		allApi.add("forName");
-		allApi.add("getConnection");
+		allApi.add("listFiles");
+		allApi.add("exists");
+		allApi.add("isDirectory");
 		//allApi.add("isDirectory");
 		ResultScreen rs = new ResultScreen(allApi);
 		
@@ -913,8 +920,8 @@ public class Generation {
 	 */
 	public static void main(String[] args)
 	{
-		String srcPath = "E://test//input//connect to database//code"; // java文件所在的文件夹
-		String api = "getProperty"; //api字符串
+		String srcPath = "E://test//input//delete files and folders in a directory//code"; // java文件所在的文件夹
+		String api = "delete"; //api字符串
 		List<ASTNode> nodeList = AstProd.getAstTrees(srcPath);
 		Generation g = new Generation();
 		g.init(nodeList, api);
