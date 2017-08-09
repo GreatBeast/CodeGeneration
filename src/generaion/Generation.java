@@ -897,9 +897,9 @@ public class Generation {
 		apriori_gen(amt);
 		
 		List<String> allApi = new ArrayList<String>();
-		allApi.add("listFiles");
-		allApi.add("exists");
-		allApi.add("isDirectory");
+		allApi.add("getProperty");
+		allApi.add("forName");
+		allApi.add("getConnection");
 		//allApi.add("isDirectory");
 		ResultScreen rs = new ResultScreen(allApi);
 		
@@ -920,8 +920,8 @@ public class Generation {
 	 */
 	public static void main(String[] args)
 	{
-		String srcPath = "E://test//input//delete files and folders in a directory//code"; // java文件所在的文件夹
-		String api = "delete"; //api字符串
+		String srcPath = "E://test//input//connect to database//code"; // java文件所在的文件夹
+		String api = "getConnection"; //api字符串
 		List<ASTNode> nodeList = AstProd.getAstTrees(srcPath);
 		Generation g = new Generation();
 		g.init(nodeList, api);

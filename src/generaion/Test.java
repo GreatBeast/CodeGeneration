@@ -9,22 +9,20 @@ import java.util.List;
 public class Test {
 
 	public static void main(String[] args){
-		List<List<Integer>> list = new ArrayList<List<Integer>>();
-		List<Integer> a = new ArrayList<Integer>();
-		a.add(1);
-		a.add(2);
-		a.add(3);
-		list.add(a);
-		List<Integer> b = new ArrayList<Integer>();
-		b.add(4);
-		b.add(5);
-		list.add(b);
-		List<Integer> c = new ArrayList<Integer>();
-		c.add(1);
-		c.add(2);
-		//c.add(3);
-		System.out.println(list.indexOf(c));
-		System.out.println(a.containsAll(c));
+		String srcPath = "E://test//test.java"; // java文件所在的文件夹
+		ASTNode node = AstProd.getAstTree(srcPath);
+		List<StructuralPropertyDescriptor> spd = node.structuralPropertiesForType();
+		List<ASTNode> nodeList = (List<ASTNode>)node.getStructuralProperty(spd.get(0));
+		ASTNode node1 = nodeList.get(0);
+		List<StructuralPropertyDescriptor> spd1 = node1.structuralPropertiesForType();
+		List<ASTNode> nodeList1 = (List<ASTNode>)node1.getStructuralProperty(spd1.get(0));
+		
+		VariableDeclarationStatement node2 = (VariableDeclarationStatement)nodeList1.get(0);
+//		List<StructuralPropertyDescriptor> spd2 = node2.structuralPropertiesForType();
+		List<Object> fg = node2.fragments();
+		Type tp = node2.getType();
+		
+		System.out.println(0);
 	}
 	
 }
