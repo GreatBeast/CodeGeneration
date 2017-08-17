@@ -1,3 +1,12 @@
 /bin
 /.metadata
 /src/search/configure.conf
+/src/search/__pycache__
+/src/search/badcode
+/src/search/code
+/src/search/api.txt
+/src/search/Check.java
+/src/search/Check.out
+/src/search/codenumber.txt
+/src/search/tokens.txt
+/result.txt
