@@ -41,7 +41,7 @@ public class AstProd {
         
         ASTParser astP = ASTParser.newParser(AST.JLS8);
         astP.setSource(new String(input).toCharArray());  
-        astP.setKind(ASTParser.K_STATEMENTS);
+        astP.setKind(ASTParser.K_COMPILATION_UNIT);
         
         ASTNode result = (ASTNode) (astP.createAST(null));
         

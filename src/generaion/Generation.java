@@ -890,43 +890,47 @@ public class Generation {
 	/*
 	 * 核心函数的调用以及频繁项的输出过程
 	 */
-	public void findFrequentTree(){
+	public List<ASTNode> findFrequentTree(List<String> allApi){
 		List<AstMapTree> amt = new ArrayList<AstMapTree>();
 		amt.add(fqTree);
 		fqTree.setInput(allInput);
 		apriori_gen(amt);
 		
-		List<String> allApi = new ArrayList<String>();
-		allApi.add("getProperty");
-		allApi.add("forName");
-		allApi.add("getConnection");
-		//allApi.add("isDirectory");
+//		List<String> allApi = new ArrayList<String>();
+//		allApi.add("getProperty");
+//		allApi.add("forName");
+//		allApi.add("getConnection");
+//		allApi.add("isDirectory");
 		ResultScreen rs = new ResultScreen(allApi);
+		List<ASTNode> result = new ArrayList<ASTNode>();
 		
 		for (AstMapTree a : amt)
 		{
 			a.root = a.root.getRoot();
 			if (rs.screen(a.root))
 			{
-				System.out.println(a.root.getRoot());
-				System.out.println("=================");
+				result.add(a.root.getRoot());
+//				System.out.println("=================");
 			}
 		}
-		System.out.println();
+//		System.out.println();
+		return result;
 	}
 	
 	/*
 	 * 程序主入口，在这里进行相关输入
 	 */
-	public static void main(String[] args)
+	public static List<ASTNode> mainGeneration(List<String> allApi, String srcPath)
 	{
-		String srcPath = "E://test//input//connect to database//code"; // java文件所在的文件夹
-		String api = "getConnection"; //api字符串
+//		String srcPath = "E://test//input//connect to database//code"; // java文件所在的文件夹
+//		String api = "getConnection"; //api字符串
+		String api = allApi.get(0);
 		List<ASTNode> nodeList = AstProd.getAstTrees(srcPath);
 		Generation g = new Generation();
 		g.init(nodeList, api);
-		g.findFrequentTree();
-		System.out.println("enough");
+		List<ASTNode> result = g.findFrequentTree(allApi);
+//		System.out.println("enough");
+		return result;
 	}
 
 }
